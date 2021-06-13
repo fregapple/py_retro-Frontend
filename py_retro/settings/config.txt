@@ -1,0 +1,11 @@
+[Display Settings]
+resolution width = 1440
+resolution height = 1080
+
+[Something]
+user = FregApple
+
+[topsecret.server.com]
+port = 50022
+forwardx11 = no
+
