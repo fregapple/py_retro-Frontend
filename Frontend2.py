@@ -12,6 +12,7 @@ pics = Images()
 colors = Colors()
 texts = Texts()
 file = File()
+global RMenu, SMenu
 PMenu = False
 RMenu = False
 SMenu = False
@@ -29,7 +30,7 @@ def Frontend():
                 
                 if x.type == VIDEORESIZE:
                     pygame.display.set_mode(x.size, HWSURFACE|DOUBLEBUF|RESIZABLE)
-                    Window.resize(w, h, config, displayScreen) 
+                    Window.resize()
                     pics.__call__()
                     screen.refresh()
 
@@ -53,10 +54,16 @@ def RomMenu():
             if x.type == QUIT:
                 screen.display = 0
                 screen.exit()
+            
+            elif x.type == pygame.KEYDOWN:
+                        if x.key == pygame.K_ESCAPE:
+                            RMenu = False
+                            Frontend()
+
 
             if x.type == VIDEORESIZE:
                 pygame.display.set_mode(x.size, HWSURFACE|DOUBLEBUF|RESIZABLE)
-                Window.resize(w, h, config, displayScreen) 
+                Window.resize()
                 pics.__call__()
                 texts.__call__()
                 GameHistory().__call__()
@@ -122,6 +129,7 @@ def RomMenu():
 
 
 def SetMenu():
+
     SMenu = True
     while SMenu == True:
         for x in pygame.event.get():
@@ -129,9 +137,15 @@ def SetMenu():
                 screen.display = 0
                 screen.exit()
 
+            elif x.type == pygame.KEYDOWN:
+                if x.key == pygame.K_ESCAPE:
+                    SMenu = False
+                    Frontend()
+                    
+
             if x.type == VIDEORESIZE:
                 pygame.display.set_mode(x.size, HWSURFACE|DOUBLEBUF|RESIZABLE)
-                Window.resize(w, h, config, displayScreen) 
+                Window.resize() 
                 pics.__call__()
                 screen.refresh()
 

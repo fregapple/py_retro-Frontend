@@ -1,5 +1,7 @@
+from tkinter.constants import CENTER
 import pygame, sys, os, configparser, tkinter.filedialog
 from pygame import HWSURFACE, DOUBLEBUF, RESIZABLE
+from pathlib import Path
 
 config = configparser.ConfigParser()
 config.read("./py_retro/settings/config.txt")
@@ -26,7 +28,7 @@ class Window():
         self.clock = pygame.time.Clock()
         pygame.display.set_caption("py_retro Frontend")
 
-    def resize(self, config, w, h):
+    def resize():
         global displayScreen
         s = pygame.display.get_surface()
         w = s.get_width() 
@@ -48,6 +50,11 @@ class Window():
         self.clock.tick(fps)
     
     def refresh(self):
+        global screenWidth, screenHeight
+        config.read("./py_retro/settings/config.txt")
+        DisplaySettings = config['Display Settings']
+        screenWidth = int(DisplaySettings['resolution width'])
+        screenHeight = int(DisplaySettings['resolution height'])
         self.hi = pygame.display.flip()
         self.hi
 
@@ -148,7 +155,7 @@ class Text():
         self.antialias = antialias
         self.colour = colour
         self.background = background
-        texts = pygame.font.SysFont(self.font, self.size)
+        texts = pygame.font.SysFont(self.font, self.size, bold=True)
         self.text = texts.render(self.text, self.antialias, self.colour, self.background)
 
     def __call__(self, font, size, text, antialias, colour, background):
@@ -164,14 +171,20 @@ class Text():
         self.antialias = antialias
         self.colour = colour
         self.background = background
-        texts = pygame.font.SysFont(self.font, self.size)
+        texts = pygame.font.SysFont(self.font, self.size, bold=True)
         self.text = texts.render(self.text, self.antialias, self.colour, self.background)
 
     def __romtext__(self):
-        self.s.blit(self.text, (float(self.w/1.8),float(self.h/1.8)))
+        x, y = (self.w/1.71), (self.h/1.75)
+        self.rect = self.text.get_rect(center=(x, y))
+        self.s.blit(self.text, self.rect)
+
+        
     
     def __coretext__(self):
-        self.s.blit(self.text, (float(self.w/1.8),float(self.h/2.5)))
+        x, y = float(self.w/1.71), float(self.h/2.4)
+        self.rect = self.text.get_rect(center=(x, y))
+        self.s.blit(self.text, self.rect)
         
     
 
@@ -190,16 +203,17 @@ class Texts():
         self.config.set('Display Settings', 'resoltuion height', f'{self.h}')
         self.colors = Colors()
         self.gh = GameHistory()
-        self.loadR = self.gh.Ga
-        self.loadC = self.gh.Co
-        self.text1 = Text('arial', int((self.w + self.h)/75), f'{self.loadR}', True, self.colors.black, None)
-        self.text2 = Text('arial', int((self.w + self.h)/75), f'{self.loadC}', True, self.colors.black, None)
+        self.loadR = File.shorten_path(self.gh.Ga, 1)
+        self.loadC = File.shorten_path(self.gh.Co, 1)
+        self.text1 = Text('arial', int((self.w + self.h)/90), f'{self.loadR}', True, self.colors.black, None)
+        self.text2 = Text('arial', int((self.w + self.h)/90), f'{self.loadC}', True, self.colors.black, None)
+
 
 
 class File():
     
     def prompt1():
-        global lib_name, loadC, change2
+        global lib_name
         top = tkinter.Tk()
         top.withdraw()
         lib_name = tkinter.filedialog.askopenfilename(parent=top)
@@ -213,7 +227,7 @@ class File():
         
 
     def prompt2():
-        global file_name, loadR, change
+        global file_name
         top = tkinter.Tk()
         top.withdraw()
         file_name = tkinter.filedialog.askopenfilename(parent=top)
@@ -223,7 +237,10 @@ class File():
             config.write(configfile)
             config.read("./py_retro/settings/config.txt")
         top.destroy()
-        
+
+    def shorten_path(file_path, length):
+        return Path(*Path(file_path).parts[-length:])
+
 
         
         

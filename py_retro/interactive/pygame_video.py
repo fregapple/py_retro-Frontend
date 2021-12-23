@@ -1,6 +1,8 @@
+import configparser
 import ctypes
 import pygame
 from pygame import HWSURFACE, DOUBLEBUF, RESIZABLE
+from ..Frontend.display import *
 
 from ..api.retro_constants import \
     PIXEL_FORMAT_0RGB1555, PIXEL_FORMAT_XRGB8888, PIXEL_FORMAT_RGB565, rcl

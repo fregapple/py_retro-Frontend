@@ -3,7 +3,7 @@ import os, configparser
 from .api import *
 
 
-# try to load C helper library
+# try to load C helper library!
 wrapped_retro_log_print_t = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_char_p)
 # noinspection PyBroadException
 try:
@@ -94,7 +94,7 @@ class EmulatedSystem:
     #         base_size=(int(self.av_info.geometry.base_width), int(self.av_info.geometry.base_height)),
     #         max_size=(int(self.av_info.geometry.max_width), int(self.av_info.geometry.max_height)),
     #         aspect_ratio=float(self.av_info.geometry.aspect_ratio)
-        # )
+    #     )
     def __set_geometry_wrapper(self) -> bool:
     
         config = configparser.ConfigParser()

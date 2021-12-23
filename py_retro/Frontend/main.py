@@ -39,7 +39,7 @@ def Emulator():
 
                 if x.type == VIDEORESIZE:
                     pygame.display.set_mode(x.size, HWSURFACE|DOUBLEBUF|RESIZABLE)
-                    Window.resize(w, h, config, displayScreen) 
+                    Window.resize() 
                     pics.__call__()
                     texts.__call__()
                     GameHistory().__call__()
@@ -102,33 +102,42 @@ def Emulator():
             running = True
             while running:
                 emu.run()
-                for event in pygame.event.get():
-                    if event.type == pygame.QUIT:
+                for x in pygame.event.get():
+                    if x.type == pygame.QUIT:
                         running = False
                         quit()
-                    elif event.type == pygame.KEYDOWN:
-                        if event.key == pygame.K_ESCAPE:
+
+                    if x.type == VIDEORESIZE:
+                        pygame.display.set_mode(x.size, HWSURFACE|DOUBLEBUF|RESIZABLE)
+                        Window.resize() 
+                        pics.__call__()
+                        texts.__call__()
+                        GameHistory().__call__()
+                        texts.text1.__romtext__()
+                        texts.text2.__coretext__()
+                        screen.refresh()
+                        
+                    elif x.type == pygame.KEYDOWN:
+                        if x.key == pygame.K_ESCAPE:
                             # running = False
                             # Game = False
-                            global PMenu
                             PauseMenu()
-                            
-                            # PauseMenu()
-                        if event.key == pygame.K_F2:
+                        
+                        if x.key == pygame.K_F2:
                             try:
                                 with open(f'{rompath}.state', 'wb') as f:
                                     f.write(emu.serialize())
                                     print('saved state.')
                             except IOError:
                                 print('could not write state.')
-                        elif event.key == pygame.K_F4:
+                        elif x.key == pygame.K_F4:
                             try:
                                 with open(f'{rompath}.state', 'rb') as f:
                                     emu.unserialize(f.read())
                                     print('loaded state.')
                             except IOError:
                                 print('could not read state.')
-                        elif event.key == pygame.K_o:
+                        elif x.key == pygame.K_o:
                             try:
                                 with emu.til_record(open(f'{rompath}.til', 'wb')):
                                     print('recording til, press ESC to end...')
@@ -138,7 +147,7 @@ def Emulator():
                                     print('done recording til.')
                             except IOError:
                                 print('could not write til.')
-                        elif event.key == pygame.K_p:
+                        elif x.key == pygame.K_p:
                             try:
                                 with emu.til_playback(open(f'{rompath}.til', 'rb')):
                                     print('playing til, press ESC to cancel...')
@@ -158,7 +167,7 @@ def Emulator():
                         #             print('done recording video.')
                         #     except SubprocessError:
                         #         print('could not invoke ffmpeg.')
-                        elif event.key == pygame.K_m:
+                        elif x.key == pygame.K_m:
                             quit()
                             # running = False
                             # mainMenu = True
