@@ -215,7 +215,7 @@ def frontend():
             # Displayed Background of Main Menu
             
             #displayScreen.fill(blue)
-            clock.tick(60)
+            clock.tick(165)
             displayScreen.blit(bg1, (0, 0))                       # This whole section of Backgrounds can be removed if I chose to stick with Main Loop Background.
 
             # What is Displayed on the Screen
@@ -290,7 +290,7 @@ def frontend():
             # Displayed Background of Main Menu
             
             #displayScreen.fill(blue)
-            clock.tick(60)
+            clock.tick(165)
             displayScreen.blit(bg1, (0, 0))                       # This whole section of Backgrounds can be removed if I chose to stick with Main Loop Background.
 
             # What is Displayed on the Screen
@@ -416,7 +416,7 @@ def frontend():
             # Displayed Background of Main Menu
             
             #displayScreen.fill(blue)
-            clock.tick(60)
+            clock.tick(165)
             displayScreen.blit(bg1, (0, 0))                       # This whole section of Backgrounds can be removed if I chose to stick with Main Loop Background.
 
             # What is Displayed on the Screen
@@ -488,6 +488,7 @@ def frontend():
         top = tkinter.Tk()
         top.withdraw()
         lib_name = tkinter.filedialog.askopenfilename(parent=top)
+        print(lib_name)
         top.destroy()
         
 
@@ -525,7 +526,7 @@ def frontend():
             button("Quit",screenWidth/3,screenHeight/3+225,screenWidth/3,50,red,green,close)
 
             # Screen refresh and update section
-            clock.tick(60)
+            clock.tick(165)
             pygame.display.update() 
 
     def reso1():
@@ -589,7 +590,7 @@ def frontend():
             TextSurf, TextRect = text_objects("Are you Sure? Press enter for Yes", largeText)
             TextRect.center = ((screenWidth/2),(screenHeight/2))
             displayScreen.blit(TextSurf, TextRect)
-            clock.tick(60)
+            clock.tick(165)
             pygame.display.flip()
 
     def reso2():
@@ -653,7 +654,7 @@ def frontend():
             TextSurf, TextRect = text_objects("Are you Sure? Press enter for Yes", largeText)
             TextRect.center = ((screenWidth/2),(screenHeight/2))
             displayScreen.blit(TextSurf, TextRect)
-            clock.tick(60)
+            clock.tick(165)
             pygame.display.update()
 
     def reso3():
@@ -718,7 +719,7 @@ def frontend():
             TextSurf, TextRect = text_objects("Are you Sure? Press enter for Yes", largeText) # This is Title Text
             TextRect.center = ((screenWidth/2),(screenHeight/2))
             displayScreen.blit(TextSurf, TextRect)
-            clock.tick(60)
+            clock.tick(165)
             pygame.display.update()
 
     def reso4():
@@ -783,7 +784,7 @@ def frontend():
             TextSurf, TextRect = text_objects("Are you Sure? Press enter for Yes", largeText) # This is Title Text
             TextRect.center = ((screenWidth/2),(screenHeight/2))
             displayScreen.blit(TextSurf, TextRect)
-            clock.tick(60)
+            clock.tick(165)
             pygame.display.flip()
 
     def ressettings():
@@ -819,7 +820,7 @@ def frontend():
             
 
             # Screen refresh and update section
-            clock.tick(60)
+            clock.tick(165)
             pygame.display.update()    
 
     def romexit():
@@ -969,7 +970,7 @@ def frontend():
         displayScreen.blit(TextSurf, TextRect)
 
         # Screen refresh and update section
-        clock.tick(60)
+        clock.tick(165)
         pygame.display.update()
 frontend()
 

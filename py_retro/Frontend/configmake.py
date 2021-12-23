@@ -12,10 +12,10 @@ else:
                                                             }
     config['Something'] = {}
     config['Something']['User'] = 'FregApple'
-    config['topsecret.server.com'] = {}
-    topsecret = config['topsecret.server.com']
-    topsecret['Port'] = '50022'  
-    topsecret['Forwardx11'] = 'no'
+    config['Last Opened Core / Game'] = {}
+    topsecret = config['Last Opened Core / Game']
+    topsecret['Core'] = 'Core'  
+    topsecret['Game'] = 'Rom'
     with open("./py_retro/settings/config.txt", "w") as configfile:
         config.write(configfile)
 
