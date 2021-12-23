@@ -89,26 +89,26 @@ class EmulatedSystem:
                   .format('\n\t'.join(str(rcl("ENVIRONMENT", cmd)) for cmd in self.__env_not_implemented)))
 
 
+    # def __set_geometry_wrapper(self) -> bool:
+    #     return self._set_geometry(
+    #         base_size=(int(self.av_info.geometry.base_width), int(self.av_info.geometry.base_height)),
+    #         max_size=(int(self.av_info.geometry.max_width), int(self.av_info.geometry.max_height)),
+    #         aspect_ratio=float(self.av_info.geometry.aspect_ratio)
+        )
     def __set_geometry_wrapper(self) -> bool:
+    
+        config = configparser.ConfigParser()
+        config.read("./py_retro/settings/config.txt")
+        DisplaySettings = config['Display Settings']
+        screenWidth = int(DisplaySettings['resolution width'])
+        screenHeight = int(DisplaySettings['resolution height'])
         return self._set_geometry(
-            base_size=(int(self.av_info.geometry.base_width), int(self.av_info.geometry.base_height)),
+            #base_size=(int(self.av_info.geometry.base_width), int(self.av_info.geometry.base_height)),
+            base_size= (screenWidth, screenHeight),
             max_size=(int(self.av_info.geometry.max_width), int(self.av_info.geometry.max_height)),
+            #max_size=(screenWidth, screenHeight)
             aspect_ratio=float(self.av_info.geometry.aspect_ratio)
         )
-    # def __set_geometry_wrapper(self) -> bool:
-    
-    #     config = configparser.ConfigParser()
-    #     config.read("./py_retro/settings/config.txt")
-    #     DisplaySettings = config['Display Settings']
-    #     screenWidth = int(DisplaySettings['resolution width'])
-    #     screenHeight = int(DisplaySettings['resolution height'])
-    #     return self._set_geometry(
-    #         #base_size=(int(self.av_info.geometry.base_width), int(self.av_info.geometry.base_height)),
-    #         base_size= (screenWidth, screenHeight),
-    #         max_size=(int(self.av_info.geometry.max_width), int(self.av_info.geometry.max_height)),
-    #         #max_size=(screenWidth, screenHeight)
-    #         aspect_ratio=float(self.av_info.geometry.aspect_ratio)
-    #     )
 
     def __set_timing_wrapper(self) -> bool:
         return self._set_timing(
