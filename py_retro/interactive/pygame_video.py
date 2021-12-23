@@ -1,5 +1,6 @@
 import ctypes
 import pygame
+from pygame import HWSURFACE, DOUBLEBUF, RESIZABLE
 
 from ..api.retro_constants import \
     PIXEL_FORMAT_0RGB1555, PIXEL_FORMAT_XRGB8888, PIXEL_FORMAT_RGB565, rcl
@@ -82,7 +83,7 @@ class PygameDisplayMixin(PygameVideoMixin):
         self.__window = None
 
     def _set_geometry(self, base_size: tuple, max_size: tuple, aspect_ratio: float) -> bool:
-        self.__window = pygame.display.set_mode(base_size)
+        self.__window = pygame.display.set_mode((base_size), HWSURFACE|DOUBLEBUF|RESIZABLE)
         return super()._set_geometry(base_size, max_size, aspect_ratio)
 
     def run(self):
