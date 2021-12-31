@@ -1,16 +1,18 @@
 import os, configparser
 
 from .api import *
+import ctypes
 
 
 # try to load C helper library!
 wrapped_retro_log_print_t = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_char_p)
 # noinspection PyBroadException
-try:
-    from . import cext
-except ImportError as ex:
-    cext = None
-    print(f'Could not load variadic log wrapper module: {repr(ex)}')
+""" Added the cext import to the ENVIRONMENT_GET_LOG_INTERFACE to avoid circular import with the frontend"""
+# try:
+#     from . import cext
+# except ImportError as ex:
+#     cext = None
+#     print(f'Could not load variadic log wrapper module: {repr(ex)}')
 
 
 class SerializationError(Exception):
@@ -95,6 +97,8 @@ class EmulatedSystem:
     #         max_size=(int(self.av_info.geometry.max_width), int(self.av_info.geometry.max_height)),
     #         aspect_ratio=float(self.av_info.geometry.aspect_ratio)
     #     )
+    """ Added a tempory screen scaler until I learn how to use the callback features
+                                                                                    """
     def __set_geometry_wrapper(self) -> bool:
     
         config = configparser.ConfigParser()
@@ -103,10 +107,8 @@ class EmulatedSystem:
         screenWidth = int(DisplaySettings['resolution width'])
         screenHeight = int(DisplaySettings['resolution height'])
         return self._set_geometry(
-            #base_size=(int(self.av_info.geometry.base_width), int(self.av_info.geometry.base_height)),
             base_size= (screenWidth, screenHeight),
             max_size=(int(self.av_info.geometry.max_width), int(self.av_info.geometry.max_height)),
-            #max_size=(screenWidth, screenHeight)
             aspect_ratio=float(self.av_info.geometry.aspect_ratio)
         )
 
@@ -254,8 +256,16 @@ class EmulatedSystem:
             return False
 
         elif cmd == ENVIRONMENT_GET_LOG_INTERFACE:
+            try:
+                from . import cext
+            except ImportError as ex:
+                cext = None
+                print(f'Could not load variadic log wrapper module: {repr(ex)}')
             if cext is not None:
-                cext.handle_env_get_log_interface(data, self._log)
+                data2 = ctypes.c_long(data).value
+                print(data)
+                print(data2)
+                cext.handle_env_get_log_interface(data2, self._log)
                 return True
             else:
                 print('environment: could not set logging interface because C wrapper not loaded.')
