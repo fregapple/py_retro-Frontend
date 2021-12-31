@@ -12,6 +12,6 @@ To install.
 
 You'll have to have python and pygame installed to run this currently until it is further developed and I make an exe. download Lifning's code from their GitHub, then drag and drop the contents of mine into theirs. Replace all the files it requests as it provides the scaling hacks for resolution. The more update to date file to run is Frontend2.py
 
-If you want, you can also use the setup.py script to install the cext file to enable logging. However, for general usage it isn't needed.
+If you want, you can also use the setup.py script to build the cext file to enable logging. However, for general usage it isn't needed.
 
 I have included 3 of Libretro's cores that work for the above mentioned systems. You'll need to provide your own roms.
