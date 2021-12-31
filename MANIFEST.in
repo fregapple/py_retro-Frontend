@@ -1,2 +1,2 @@
-recursive-include Test *.dll
-recursive-include Test *.jpg
+recursive-include Frontend *.dll
+recursive-include Frontend *.jpg
