@@ -1,7 +1,22 @@
 from pathlib import Path
-import configparser
+import configparser, os
 
+
+pyfolder = Path("./py_retro")
+setfolder = Path("./py_retro/settings")
 configFile = Path("./py_retro/settings/config.txt")
+
+if pyfolder.is_dir():
+    None
+
+else: 
+    os.mkdir('./py_retro') 
+
+if setfolder.is_dir():
+    None
+else: 
+    os.mkdir('./py_retro/settings')
+    
 if configFile.is_file():
     None
 
