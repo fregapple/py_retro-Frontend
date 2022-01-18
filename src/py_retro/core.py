@@ -57,13 +57,19 @@ class EmulatedSystem:
         self.llw = LowLevelWrapper(libpath)
         self.name = self.get_library_info()['name']
         self.game_data = None
-
+        
         # HACK: just put this in for software frames 'til we support SET_HW_RENDER
-        self.env_vars = {b'parallel-n64-gfxplugin': b'angrylion'}
+        """ I have added my HACK variation in the SET_VARIABLES. This here is to allow a clean slate
+                though it may have an adverse affect of having to load the settings twice. Will need to monitor."""
+        self.env_vars = {b'None' : b'None'}
+
+        """Just have this in here for console viewing purposes. Will remove eventually"""
+        print(libpath)
+        
 
         self.__env_not_implemented = list()
 
-        # todo: a layer of indirection to allow live monkey-patching?
+        # TODO: a layer of indirection to allow live monkey-patching?
         self._video_refresh_wrapper = retro_video_refresh_t(self._video_refresh)
         self._audio_sample_wrapper = retro_audio_sample_t(self._audio_sample)
         self._audio_sample_batch_wrapper = retro_audio_sample_batch_t(self._audio_sample_batch)
@@ -73,7 +79,7 @@ class EmulatedSystem:
 
         self.llw.set_video_refresh(self._video_refresh_wrapper)
         self.llw.set_audio_sample_batch(self._audio_sample_batch_wrapper)
-        # todo: see if we can unconditionally set both without negative consequence.
+        # TODO: see if we can unconditionally set both without negative consequence.
         # we really don't want non-batch being called if we can help it, because it's very slow
         if HACK_need_audio_sample(self.name):
             self.llw.set_audio_sample(self._audio_sample_wrapper)
@@ -194,6 +200,11 @@ class EmulatedSystem:
     def run(self):
         self.llw.run()
 
+    def env_change(change):
+        env_vars = change
+        env_vars
+        
+
     def _environment(self, cmd: int, data: ctypes.c_void_p) -> bool:
         if cmd == ENVIRONMENT_GET_CAN_DUPE:
             b_data = ctypes.cast(data, ctypes.POINTER(ctypes.c_bool))
@@ -206,21 +217,89 @@ class EmulatedSystem:
         elif cmd == ENVIRONMENT_GET_VARIABLE:
             variable = ctypes.cast(data, ctypes.POINTER(retro_variable))[0]
             variable.value = self.env_vars.get(variable.key)
+            print(str(variable.key) + " | " + str(self.env_vars.get(variable.key)))
             return True
 
         elif cmd == ENVIRONMENT_SET_VARIABLES:
+            """Here I have adjusted the way this cmd works. If there is no settings file, it runs as before
+                    but also writes all settings to 2 files. One shows all available settings and the other just
+                        shows the current setting that will be written to the core for use."""
+
             variables = ctypes.cast(data, ctypes.POINTER(retro_variable))
             idx = 0
+            x = 0
             current = variables[idx]
+            # This is a variable to name the settings files. TODO will work out a better naming scheme.
+            tip = current.key
 
-            while current.key is not None:
-                description, _, options = current.value.partition(b'; ')
-                options = options.split(b'|')
-                val = self.env_vars.setdefault(current.key, options[0])
-                assert val in options, f'{val} invalid for {current.key}, expected {options}'
-                idx += 1
-                current = variables[idx]
+            # This section shows the location of the files
+            from pathlib import Path
+            coreFile = Path(f"./Libretro Cores/Core Settings/{tip}.txt") 
+            cFile = Path(f"./Libretro Cores/Core Settings/{tip} settings.txt")
+            
+            # This section verifies if the files exist and if it does sets the values based on the contents.
+            if coreFile.is_file() and cFile.is_file():
+                file = open(f"./Libretro Cores/Core Settings/{tip} settings.txt", "r")
+                content = file.readlines()
+                
+                while current.key is not None:
+                    
+                    setting = content[x]
+                    description, _, option = setting.partition('|')
+                    option = option.split('|')
+                    new = bytes(option[0].strip(), 'utf-8')
+                    val = self.env_vars.setdefault(current.key, new)
+                    idx += 1
+                    x += 1
+                    current = variables[idx]
+                    
+            # If files don't exists loop will go here to create the files and set default settings for runtime
+            else:
+
+                # Deletes this file as the other doesn't exist
+                if coreFile.is_file():
+                    os.remove(f"./Libretro Cores/Core Settings/{tip}.txt")
+
+                # Deletes this file as the other doesn't exist
+                if cFile.is_file():
+                    os.remove(f"./Libretro Cores/Core Settings/{tip} settings.txt")
+
+                # Creates the files from scratch with all default values
+                while current.key is not None:
+                    
+                    # HACK: This allows for n64 to use the software rendering plugin. Until HW Rendering is supported.
+                    if current.key == b'parallel-n64-gfxplugin':
+                        val = self.env_vars.setdefault(current.key, b'angrylion')
+                        description, _, options = current.value.partition(b'; ')
+                        options = options.split(b'|')
+                        with open(f"./Libretro Cores/Core Settings/{tip}.txt", "a") as corefile:
+                            corefile.write(str(current.key) + " | " + str(current.value) + "\n") 
+
+                        with open(f"./Libretro Cores/Core Settings/{tip} settings.txt", "a") as corefile2:
+                            corefile2.write(str(current.key) + " | " + str(b'angrylion').strip("b'") + "\n")   
+                        assert val in options, f'{val} invalid for {current.key}, expected {options}'                     
+                        idx += 1
+                        current = variables[idx]
+                        
+                    else:
+                        description, _, options = current.value.partition(b'; ')
+                        options = options.split(b'|')
+
+                        with open(f"./Libretro Cores/Core Settings/{tip}.txt", "a") as corefile:
+                            corefile.write(str(current.key) + " | " + str(current.value) + "\n") 
+
+                        with open(f"./Libretro Cores/Core Settings/{tip} settings.txt", "a") as corefile2:
+                            corefile2.write(str(current.key) + " | " + str(options[0]).strip("b'") + "\n")
+
+                        val = self.env_vars.setdefault(current.key, options[0])
+                        assert val in options, f'{val} invalid for {current.key}, expected {options}'
+                        
+                        idx += 1
+                        current = variables[idx]
+                    print(current.key)
+            
             return True
+            
 
         elif cmd == ENVIRONMENT_GET_VARIABLE_UPDATE:
             b_data = ctypes.cast(data, ctypes.POINTER(ctypes.c_bool))

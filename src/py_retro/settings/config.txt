@@ -1,11 +1,17 @@
 [Display Settings]
-resolution width = 800
-resolution height = 600
+resolution width = 903
+resolution height = 756
 
-[Something]
-user = FregApple
+[Core Defaults]
+active core = C:\Users\sam_s\Desktop\Python Stuff\Frontend!\Package\examples\snes9x_libretro.dll
+.gbc = ./Libretro Cores/gambatte_libretro.dll
+.gb = ./Libretro Cores/gambatte_libretro.dll
+.gba = ./Libretro Cores/vba_next_libretro.dll
+.nes = ./Libretro Cores/snes9x_libretro.dll
+.snes = C:\Users\sam_s\Desktop\Python Stuff\Frontend!\Package\examples\snes9x_libretro.dll
+.n64 = ./Libretro Cores/parallel_n64_libretro.dll
 
 [Last Opened Core / Game]
-core = Core
-game = Rom
+core = C:\Users\sam_s\Desktop\Python Stuff\Frontend!\Package\examples\snes9x_libretro.dll
+game = C:\Users\sam_s\Desktop\Python Stuff\Frontend!\Package\examples\Breath of Fire (U) [!].smc
 

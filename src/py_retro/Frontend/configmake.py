@@ -1,22 +1,32 @@
 from pathlib import Path
 import configparser, os
 
-
+# Global definitions for ease
 pyfolder = Path("./py_retro")
 setfolder = Path("./py_retro/settings")
 configFile = Path("./py_retro/settings/config.txt")
+core_set_folder = Path("./Libretro Cores/Core Settings")
 
+# The below if and else options look for directories and if they don't exist will make them.
 if pyfolder.is_dir():
     None
 
 else: 
-    os.mkdir('./py_retro') 
+    os.mkdir(pyfolder) 
 
 if setfolder.is_dir():
     None
 else: 
-    os.mkdir('./py_retro/settings')
+    os.mkdir(setfolder)
+
+def core_settings():
     
+    if core_set_folder.is_dir():
+        None
+    else:
+        os.mkdir(core_set_folder)
+
+# This looks for the config file. If it doesn't exits it will make it with the below parameters. 
 if configFile.is_file():
     None
 
@@ -25,8 +35,14 @@ else:
     config['Display Settings'] = {'Resolution Width': 800,
                                   'Resolution Height': 600,
                                                             }
-    config['Something'] = {}
-    config['Something']['User'] = 'FregApple'
+    config['Core Defaults'] = {}
+    config['Core Defaults']['active core'] = 'None'
+    config['Core Defaults']['.gbc'] = './Libretro Cores/gambatte_libretro.dll'
+    config['Core Defaults']['.gb'] = './Libretro Cores/gambatte_libretro.dll'
+    config['Core Defaults']['.gba'] = './Libretro Cores/vba_next_libretro.dll'
+    config['Core Defaults']['.nes'] = './Libretro Cores/snes9x_libretro.dll'
+    config['Core Defaults']['.snes'] = './Libretro Cores/snes9x_libretro.dll'
+    config['Core Defaults']['.n64'] = './Libretro Cores/parallel_n64_libretro.dll'
     config['Last Opened Core / Game'] = {}
     topsecret = config['Last Opened Core / Game']
     topsecret['Core'] = 'Core'  
@@ -34,6 +50,8 @@ else:
     with open("./py_retro/settings/config.txt", "w") as configfile:
         config.write(configfile)
 
+
+# Similar to the config file, it will create the ReadMe file if it doesn't exist.
 class ReadMe():
     readmeFile = Path("./py_retro/settings/README.txt")
     if readmeFile.is_file():

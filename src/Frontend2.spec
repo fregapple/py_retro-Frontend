@@ -1,4 +1,6 @@
 # -*- mode: python ; coding: utf-8 -*-
+import os, pygame_gui
+pygame_data_loc = os.path.join(os.path.dirname(pygame_gui.__file__), 'data')
 
 
 block_cipher = None
@@ -14,8 +16,12 @@ a = Analysis(['Frontend2.py'],
 		    ('./py_retro/tas/*', './py_retro/tas'),
 		    ('./py_retro/__init__.py', './py_retro'),
 		    ('./py_retro/core.py', './py_retro'),
-		    ('./py_retro/game_info_reader.py', './py_retro')],
-             hiddenimports=['pyaudio'],
+		    ('./py_retro/game_info_reader.py', './py_retro'),
+		    (pygame_data_loc, "pygame_gui/data"),
+		    ('C:/Users/sam_s/Desktop/Python Stuff/Test/src/data/themes/*', './data/themes'),
+		    ('C:/Users/sam_s/Desktop/Python Stuff/Test/src/data/fonts/*', './data/fonts'),
+		    ('C:/Users/sam_s/Desktop/Python Stuff/Test/src/data/images/*', './data/images')],
+             hiddenimports=['pyaudio', 'pygame_gui'],
              hookspath=[],
              hooksconfig={},
              runtime_hooks=[],
@@ -24,6 +30,7 @@ a = Analysis(['Frontend2.py'],
              win_private_assemblies=False,
              cipher=block_cipher,
              noarchive=False)
+
 pyz = PYZ(a.pure, a.zipped_data,
              cipher=block_cipher)
 
