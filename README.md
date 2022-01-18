@@ -12,6 +12,9 @@ All in all, you are able to load games and run N64, SNES/NES and GB/GBC/GBA. Onc
 
 ##### You can now save and change core settings!!! This is a very basic implementation and want to have the option to change these settings within the Frontend. However, for now you have to change the value within the txt file.
 
+
+
+
 **To Install.**
 
 You either download the release that I have packaged myself.
