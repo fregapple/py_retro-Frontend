@@ -15,7 +15,7 @@ All in all, you are able to load games and run N64, SNES/NES and GB/GBC/GBA. Onc
 
 
 
-**To Install.**
+**To Install:**
 
 You either download the release that I have packaged myself.
 
