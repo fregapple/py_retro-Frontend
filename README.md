@@ -8,7 +8,11 @@ Please know, as I said, the code is a mess and I have started making new main fi
 
 All in all, you are able to load games and run N64, SNES/NES and GB/GBC/GBA. Once I learn how to implement more cores and maybe add in OpenGL support for HW rendering I will start to shift to add more to Lifning's code. But right now I have added a few lines to their code so you are able to adjust the window size, either via dragging the window, or editing the config file.
 
-To install.
+##### Have made a few changes from the original. Firstly, I have incorporated pygame_gui, so I can use their library of UI elements, rather than creating them myself. I will eventually change the menu buttons to reflect this change. In turn, I have removed TKINTER as I am using pygame_gui's file dialog now.
+
+##### You can now save and change core settings!!! This is a very basic implementation and want to have the option to change these settings within the Frontend. However, for now you have to change the value within the txt file.
+
+**To Install.**
 
 You either download the release that I have packaged myself.
 
