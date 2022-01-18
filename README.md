@@ -31,6 +31,12 @@ Python3.6 will package it fine however it will not run any game due to the 32bit
 
 Python3.9.5 will not package and run into an error of decoding. 
 
+Python3.9.9 from the windows store works well
+
+Python3.10_32 works well as well! In fact with some cores it isn't missing some of the log information. I think for the 64 bit versions, my converter loses some data.
+
+Python3.6_64 and above on linux seems to run well and as the code doesn't need the converter unlike windows, there is no missing logs either.
+
 Haven't tried other versions of python
 
 FIX: Delete the CEXT file in './src/py_retro' and run the Frontend2.py in src with cmd. The cext file is only used for logging so for playing is not needed
