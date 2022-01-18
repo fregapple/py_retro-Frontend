@@ -1,6 +1,6 @@
 This is a continuation of works I have found on GitHub, - https://github.com/lifning/python-retro -
 
-I am new to coding, and using this as a difficult / challenging way to learn. I stop frequently to look up how to do certain things, not to mention the main file for the Frontend is just STACKED with code. A lot is unnecessary, but currently works. I did break the resolution settings as I added a new GUI and made it scale with VIDEORESIZABLE. So my old resolution options don't work correctly. I also have kept my old buttons for loading a core / rom. However they will be changed to match the theme.. eventually!
+I am new to coding, and using this as a difficult / challenging way to learn. I stop frequently to look up how to do certain things, not to mention the main file for the Frontend is just STACKED with code. A lot is unnecessary, but currently works.
 
 This is just a project for myself and sharing on GitHub for anyone to checkout and give advice!
 
