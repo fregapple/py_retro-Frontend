@@ -21,11 +21,11 @@ You either download the release that I have packaged myself.
 
 Or you can package it yourself with the code.
 
-To do so, download my code and Lifnings code. Drag Lifning's code into the src folder of mine and don't overwrite the files, as I have adjusted certain things to hack em together. Then go back to main directory and run: python install.py in CMD. Please note that this works when downloading python3.9.9 from windows store. Not sure why! Perhaps just my PC.
+To do so, download my code and Lifnings code. Drag Lifning's code into the src folder of mine and don't overwrite the files, as I have adjusted certain things to hack em together. Then go back to main directory and run: python install.py in CMD.
 
-This installer will also download all the dependencies needed with pip: Tkinter, pygame, pyinstaller. And it will attempt to install pyaudio from the folder included in ./src. The pyaudio files included in the folder are 32 / 64 bit specific for windows, you'll have to install your own version of pyaudio independently if running other OS. I have done so on linux with 'sudo apt-get python-pyaudio'.
+This installer will also download all the dependencies needed with pip: pygame_gui, pygame, pyinstaller. And it will attempt to install pyaudio from the folder included in ./src. The pyaudio files included in the folder are 32 / 64 bit specific for windows, you'll have to install your own version of pyaudio independently if running another OS. I have done so on linux with 'sudo apt-get python-pyaudio'.
 
-There are a few issues with certain versions of python and various methods of packaging:
+_There are a few issues with certain versions of python and various methods of packaging:_
 
 Python3.6 will package it fine however it will not run any game due to the 32bit - 64bit converter I have implemented for the logging
 
