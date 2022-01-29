@@ -1,5 +1,5 @@
 from setuptools import sandbox
-import shutil, subprocess, sys, os, pip, glob
+import shutil, subprocess, sys, os, pip, glob, pathlib, platform, struct
 
 def packagepygame():
     subprocess.check_call([sys.executable, "-m", "pip", "install", "pygame", "-U"])
@@ -28,6 +28,13 @@ sandbox.run_setup('setup.py', ['build'])
 
 packagecext()
 
+for pyd in pathlib.Path('./src/py_retro').glob('*.pyd'):
+    shutil.copy(pyd, './src/py_retro/cext.pyd') 
+
+for so in pathlib.Path('./src/py_retro').glob('*.so'):
+    shutil.copy(so, './src/py_retro/cext.so')
+
+
 shutil.rmtree('./build')
 shutil.rmtree('./temp')
 shutil.rmtree('./Py_Retro_Frontend.egg-info')
@@ -45,19 +52,34 @@ try:
 except:
     print('folder already exists')
 
-
-
 try:
     shutil.copytree('./src/examples','./Frontend/examples')
 except:
     print('folder already exists')
-try:
-    shutil.copytree('./src/Libretro Cores', './Frontend/Libretro Cores')
-except:
-    print('folder already exists')
+
+if platform.system() == 'Windows' and struct.calcsize("P")*8 == 32:
+    print("py_retro Windows-32bit Version Installed")
+    try:
+        shutil.copytree('./src/Libretro Cores/win32', './Frontend/Libretro Cores')
+    except:
+        print('folder already exists')
+
+elif platform.system() == 'Windows' and struct.calcsize("P")*8 == 64:
+    try:
+        shutil.copytree('./src/Libretro Cores/win64', './Frontend/Libretro Cores')
+    except:
+        print('folder already exists')
+
+elif platform.system() == 'Linux' and struct.calcsize("P")*8 == 64:
+    try:
+        shutil.copytree('./src/Libretro Cores/linux64', './Frontend/Libretro Cores')
+    except:
+        print('folder already exists')
+
 try:
     shutil.move('./dist/Frontend2.exe', './Frontend')
 except:
     print('folder already exists')
+
 shutil.rmtree('./build')
 shutil.rmtree('./dist')
