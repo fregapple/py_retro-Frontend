@@ -224,7 +224,8 @@ class EmulatedSystem:
             """Here I have adjusted the way this cmd works. If there is no settings file, it runs as before
                     but also writes all settings to 2 files. One shows all available settings and the other just
                         shows the current setting that will be written to the core for use."""
-
+            from .Frontend.configmake import core_settings
+            core_settings()
             variables = ctypes.cast(data, ctypes.POINTER(retro_variable))
             idx = 0
             x = 0
@@ -341,10 +342,15 @@ class EmulatedSystem:
                 cext = None
                 print(f'Could not load variadic log wrapper module: {repr(ex)}')
             if cext is not None:
-                data2 = ctypes.c_long(data).value
-                print(data)
-                print(data2)
-                cext.handle_env_get_log_interface(data2, self._log)
+                import struct, platform
+                if platform.system() == "Windows" and struct.calcsize("P")*8 == 64:
+                    data2 = ctypes.c_long(data).value
+                    print('Running Windows 64 bit data conversion..')
+                    print(data)
+                    print(data2)
+                    cext.handle_env_get_log_interface(data2, self._log) 
+                else:
+                    cext.handle_env_get_log_interface(data, self._log)
                 return True
             else:
                 print('environment: could not set logging interface because C wrapper not loaded.')
