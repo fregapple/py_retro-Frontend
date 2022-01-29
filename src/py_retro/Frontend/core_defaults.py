@@ -1,4 +1,7 @@
+from __future__ import nested_scopes
 import os, sys, pygame, configparser
+
+import pygame_gui
 from py_retro.Frontend.configmake import *
 
 # Global information for ease
@@ -19,7 +22,7 @@ class CoreDefaults():
         self.cd = self.config['Core Defaults']
         self.active = self.cd['active core']
         self.gbc = self.cd['.gbc']
-        self.bg = self.cd['.gb']
+        self.gb = self.cd['.gb']
         self.gba = self.cd['.gba']
         self.nes = self.cd['.nes']
         self.snes = self.cd['.snes']
@@ -43,9 +46,13 @@ class CoreDefaults():
             return active
 
     # A fuction that can be used by the defaultChange to declutter and write new Defaults to the config file.
-    def coreWrite(corename, extension):
+    def coreWrite(corename, extension, extension2, extension3):
         config.read(conRead) 
-        config.set('Core Defaults', f'{extension}', f'{corename}')     
+        config.set('Core Defaults', f'{extension}', f'{corename}')
+        if extension2 is not None:
+            config.set('Core Defaults', f'{extension2}', f'{corename}')
+        if extension3 is not None:
+            config.set('Core Defaults', f'{extension3}', f'{corename}')     
         with open(conRead, "w") as configfile:
             config.write(configfile)
             config.read(conRead)
@@ -53,24 +60,34 @@ class CoreDefaults():
     # A call to change Core Defaults. 
     # FIXME: This needs to be changed as it prevents applying default cores for individual systems. 
             # EG: bsnes for snes and snes9x for nes and vice versa.
-    def defaultChange(file_name, corename):
-        config.read(conRead)
+    def defaultChange(file_name, corename):       
         print(file_name)
         print(corename)
         if file_name == 'gambatte_libretro':
             extension = '.gbc'
-            CoreDefaults.coreWrite(corename, extension)
+            extension2 = '.gb'
+            CoreDefaults.coreWrite(corename, extension, extension2, None)
         
         elif file_name == 'bsnes_libretro': 
             extension = '.snes'
-            CoreDefaults.coreWrite(corename, extension)
+            extension2 = '.nes'
+            CoreDefaults.coreWrite(corename, extension, extension2, None)
 
         elif file_name == 'snes9x_libretro':
             extension = '.snes'
-            CoreDefaults.coreWrite(corename, extension)
+            extension2 = '.nes'
+            CoreDefaults.coreWrite(corename, extension, extension2, None)
 
 
-
+    def specificCoreChange(file_name, corename, manager, size):
+        from .display import DefaultSelector
+        if file_name == 'gambatte_libretro':
+            item1 = '.gb'
+            item2 = '.gbc'
+            item3 = None
+        rect = pygame.Rect((0,0),(250,175))
+        rect.center = size[2].get_rect().center
+        DefaultSelector(rect, manager, item1, item2, item3, corename) 
 
            
 

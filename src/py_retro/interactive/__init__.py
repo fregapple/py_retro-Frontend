@@ -47,3 +47,11 @@ class RetroEmu(
     TilRecorderInputMixin
 ):
     pass
+
+class RetroEmu2(
+    PygameFpsLimitMixin,
+    PortaudioMixin,
+    PygameVideoMixin,
+    PygameJoystickMixin,
+):
+    pass

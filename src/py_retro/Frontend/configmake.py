@@ -80,5 +80,42 @@ class ReadMe():
         with open("./py_retro/settings/README.txt", "w") as readmefile:
             readme.write(readmefile)
 
+class ConfigRead:
+
+    def __init__(self):
+        self.config = configparser.ConfigParser()
+        self.OpenFile()
+
+    def OpenFile(self):
+        return self.config.read("./py_retro/settings/config.txt")
+
+    def DisplayRead(self):
+        DisplaySettings = self.config['Display Settings']
+        return (int(DisplaySettings['resolution width']), int(DisplaySettings['resolution height']))
+
+    def DisplayWrite(self, w, h):
+        self.config.set('Display Settings', 'resolution width', f'{w}')
+        self.config.set('Display Settings', 'resolution height', f'{h}')
+        with open("./py_retro/settings/config.txt", "w") as configfile:
+            self.config.write(configfile)
+            self.OpenFile()
+            DisplaySettings = self.config['Display Settings']
+            return (int(DisplaySettings['resolution width']), int(DisplaySettings['resolution height']))
     
+    def GameWrite(self, core, rom, activecore):
+        if core is not None:
+            self.config.set('Last Opened Core / Game', 'core', f'{core}')
+        if rom is not None:
+            self.config.set('Last Opened Core / Game', 'game', f'{rom}')
+        if activecore is not None:
+            self.config.set('Core Defaults', 'active core', f'{activecore}')
+        with open("./py_retro/settings/config.txt", "w") as configfile:
+            self.config.write(configfile)
+            self.OpenFile()
+
+    def GameRead(self):
+        self.gh = self.config['Last Opened Core / Game']
+        self.Ga = self.gh['game']
+        self.Co = self.gh['core']
+        return (self.Ga, self.Co)
     

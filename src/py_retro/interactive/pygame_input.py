@@ -42,6 +42,7 @@ class PygameJoystickMixin(EmulatedSystem):
     def __init__(self, libpath, **kw):
         super().__init__(libpath, **kw)
         self.__joystick = None
+        self.__keyboard = None
         pygame.joystick.init()
 
 
@@ -52,7 +53,7 @@ class PygameJoystickMixin(EmulatedSystem):
         else:
             print('No joystick devices found.')
 
-        """This is the Code that doesn't work. When I need to add more that one input, I will revisit this code"""
+        # """This is the Code that doesn't work. When I need to add more that one input, I will revisit this code"""
         # joystick_index = kw.get("joystick", None)
         # joystick_count = pygame.joystick.get_count()
 
@@ -70,7 +71,8 @@ class PygameJoystickMixin(EmulatedSystem):
             return
         # TODO: multi support, per-pad configurable mappings.
         port = 0
-        device = DEVICE_JOYPAD
+        if self.__joystick:
+            device = DEVICE_JOYPAD
         index = 0
         for id_, fn in g_button_map.items():
             key = bytes((port, device, index, id_))

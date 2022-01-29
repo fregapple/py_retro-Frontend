@@ -85,7 +85,7 @@ class PygameDisplayMixin(PygameVideoMixin):
         self.__window = None
 
     def _set_geometry(self, base_size: tuple, max_size: tuple, aspect_ratio: float) -> bool:
-        self.__window = pygame.display.set_mode((base_size), HWSURFACE|DOUBLEBUF|RESIZABLE)
+        self.__window = pygame.display.set_mode((base_size))
         return super()._set_geometry(base_size, max_size, aspect_ratio)
 
     def run(self):
